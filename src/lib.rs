@@ -1,0 +1,35 @@
+use std::fmt::Debug;
+
+pub trait HasherT {
+    type Output;
+    fn hash(s: &[u8]) -> Self::Output;
+}
+
+pub trait BlockHeaderT: Clone + Send + Sync + Debug + 'static {
+    // Header number
+    type Number: Into<u64>;
+    // Header hash type
+    type Hash: AsRef<[u8]>;
+    // Hashing algorithm;
+    type Hashing: HasherT<Output = Self::Hash>;
+
+    // Creates new header
+    fn new(number: Self::Number, state_root: Self::Hash, parent_hash: Self::Hash) -> Self;
+
+    // Return reference to the header number.
+    fn number(&self) -> &Self::Number;
+
+    // Returns a reference to the state root.
+    fn state_root(&self) -> &Self::Hash;
+
+    // Returns a reference to the parent hash.
+    fn parent_hash(&self) -> &Self::Hash;
+
+    fn encode(&self) -> &[u8] {
+        todo!()
+    }
+    // Returns the hash of the header.
+    fn hash(&self) -> Self::Hash {
+        Self::Hashing::hash(self.encode())
+    }
+}
