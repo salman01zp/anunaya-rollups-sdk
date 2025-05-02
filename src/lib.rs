@@ -74,3 +74,15 @@ where
         todo!()
     }
 }
+
+pub trait TransactionT {}
+
+pub trait BlockT: Clone + Send + Sync + Debug + 'static {
+    type Transaction: TransactionT;
+    type BlockHeader: BlockHeaderT;
+    type Hash: HasherT;
+
+    fn header(&self) -> &Self::BlockHeader;
+    fn transactions(&self) -> &[Self::Transaction];
+    fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self;
+}
