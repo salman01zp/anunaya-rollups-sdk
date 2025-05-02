@@ -75,14 +75,45 @@ where
     }
 }
 
-pub trait TransactionT {}
+pub trait TransactionT: Clone + Send + Sync + Debug + 'static {}
 
 pub trait BlockT: Clone + Send + Sync + Debug + 'static {
     type Transaction: TransactionT;
     type BlockHeader: BlockHeaderT;
-    type Hash: HasherT;
 
     fn header(&self) -> &Self::BlockHeader;
     fn transactions(&self) -> &[Self::Transaction];
     fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self;
+}
+
+#[derive(Clone, Debug)]
+pub struct Block<BlockHeader, Transaction> {
+    // The block header.
+    pub header: BlockHeader,
+    // Transactions in block
+    pub transactions: Vec<Transaction>,
+}
+
+impl<BlockHeader, Transaction> BlockT for Block<BlockHeader, Transaction>
+where
+    BlockHeader: BlockHeaderT,
+    Transaction: TransactionT,
+{
+    type BlockHeader = BlockHeader;
+    type Transaction = Transaction;
+
+    fn header(&self) -> &Self::BlockHeader {
+        &self.header
+    }
+
+    fn transactions(&self) -> &[Self::Transaction] {
+        &self.transactions[..]
+    }
+
+    fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self {
+        Block {
+            header,
+            transactions,
+        }
+    }
 }
