@@ -137,7 +137,6 @@ mod tests {
     }
     impl SignedTransactionT for TestTransaction {}
 
-
     #[derive(Clone, Debug, Serialize, Deserialize)]
     pub struct KeccakHasher;
 
@@ -161,8 +160,12 @@ mod tests {
 
         // Create some transactions
         let transactions = vec![
-            TestTransaction { data: vec![1, 2, 3] },
-            TestTransaction { data: vec![4, 5, 6] },
+            TestTransaction {
+                data: vec![1, 2, 3],
+            },
+            TestTransaction {
+                data: vec![4, 5, 6],
+            },
         ];
 
         // Create a block
@@ -170,9 +173,9 @@ mod tests {
 
         // Serialize to JSON
         let serialized = serde_json::to_string(&block).unwrap();
-        
+
         // Deserialize back
-        let deserialized: Block<BlockHeader<u64, KeccakHasher>, TestTransaction> = 
+        let deserialized: Block<BlockHeader<u64, KeccakHasher>, TestTransaction> =
             serde_json::from_str(&serialized).unwrap();
 
         // Verify the deserialized block matches the original
@@ -180,9 +183,13 @@ mod tests {
         assert_eq!(block.header.parent_hash, deserialized.header.parent_hash);
         assert_eq!(block.header.state_root, deserialized.header.state_root);
         assert_eq!(block.transactions.len(), deserialized.transactions.len());
-        
+
         // Verify transaction data
-        for (original, deserialized) in block.transactions.iter().zip(deserialized.transactions.iter()) {
+        for (original, deserialized) in block
+            .transactions
+            .iter()
+            .zip(deserialized.transactions.iter())
+        {
             assert_eq!(original.data, deserialized.data);
         }
     }
