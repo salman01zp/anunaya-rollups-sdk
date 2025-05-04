@@ -118,3 +118,72 @@ where
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use alloy::primitives::B256;
+
+    // Test implementation of SignedTransactionT
+    #[derive(Clone, Debug, Serialize, Deserialize)]
+    struct TestTransaction {
+        data: Vec<u8>,
+    }
+
+    impl AsRef<[u8]> for TestTransaction {
+        fn as_ref(&self) -> &[u8] {
+            &self.data
+        }
+    }
+    impl SignedTransactionT for TestTransaction {}
+
+
+    #[derive(Clone, Debug, Serialize, Deserialize)]
+    pub struct KeccakHasher;
+
+    impl HasherT for KeccakHasher {
+        type Output = B256;
+
+        fn hash(s: &[u8]) -> Self::Output {
+            alloy::primitives::keccak256(s)
+        }
+    }
+
+    #[test]
+    fn test_block_serialization() {
+        // Create test data
+        let parent_hash = KeccakHasher::hash(b"parent");
+        let state_root = KeccakHasher::hash(b"state");
+        let number = 1u64;
+
+        // Create a block header
+        let header = BlockHeader::<u64, KeccakHasher>::new(number, state_root, parent_hash);
+
+        // Create some transactions
+        let transactions = vec![
+            TestTransaction { data: vec![1, 2, 3] },
+            TestTransaction { data: vec![4, 5, 6] },
+        ];
+
+        // Create a block
+        let block = Block::new(header, transactions);
+
+        // Serialize to JSON
+        let serialized = serde_json::to_string(&block).unwrap();
+        
+        // Deserialize back
+        let deserialized: Block<BlockHeader<u64, KeccakHasher>, TestTransaction> = 
+            serde_json::from_str(&serialized).unwrap();
+
+        // Verify the deserialized block matches the original
+        assert_eq!(block.header.number, deserialized.header.number);
+        assert_eq!(block.header.parent_hash, deserialized.header.parent_hash);
+        assert_eq!(block.header.state_root, deserialized.header.state_root);
+        assert_eq!(block.transactions.len(), deserialized.transactions.len());
+        
+        // Verify transaction data
+        for (original, deserialized) in block.transactions.iter().zip(deserialized.transactions.iter()) {
+            assert_eq!(original.data, deserialized.data);
+        }
+    }
+}
