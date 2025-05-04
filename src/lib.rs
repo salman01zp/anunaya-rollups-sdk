@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
 
 pub trait HasherT: Sync + Send {
@@ -34,7 +35,7 @@ pub trait BlockHeaderT: Clone + Send + Sync + Debug + 'static {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BlockHeader<Number: Copy + Into<u64>, Hash: HasherT> {
     pub parent_hash: Hash::Output,
     pub number: Number,
@@ -86,7 +87,7 @@ pub trait BlockT: Clone + Send + Sync + Debug + 'static {
     fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self;
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Block<BlockHeader, Transaction> {
     // The block header.
     pub header: BlockHeader,
