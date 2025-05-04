@@ -75,10 +75,10 @@ where
     }
 }
 
-pub trait TransactionT: Clone + Send + Sync + Debug + 'static {}
+pub trait SignedTransactionT: Clone + Send + Sync + Debug + 'static {}
 
 pub trait BlockT: Clone + Send + Sync + Debug + 'static {
-    type Transaction: TransactionT;
+    type Transaction: SignedTransactionT;
     type BlockHeader: BlockHeaderT;
 
     fn header(&self) -> &Self::BlockHeader;
@@ -97,7 +97,7 @@ pub struct Block<BlockHeader, Transaction> {
 impl<BlockHeader, Transaction> BlockT for Block<BlockHeader, Transaction>
 where
     BlockHeader: BlockHeaderT,
-    Transaction: TransactionT,
+    Transaction: SignedTransactionT,
 {
     type BlockHeader = BlockHeader;
     type Transaction = Transaction;
