@@ -13,4 +13,20 @@ pub enum SequencerError {
     /// Transaction verification
     #[error(transparent)]
     SignatureError(#[from] SignatureError),
+    /// Transaction store error
+    #[error(transparent)]
+    TxStoreError(#[from] TxStoreError),
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum TxStoreError {
+    /// Mempool is full
+    #[error("Mempool is full")]
+    MempoolFull,
+    /// Index out of bounds
+    #[error("Index out of bounds")]
+    IndexOutOfBounds,
+    /// Failed to acquire lock
+    #[error("Failed to acquire lock")]
+    LockError,
 }
