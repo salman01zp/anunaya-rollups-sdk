@@ -3183,6 +3183,7 @@ version = "0.1.0"
 dependencies = [
  "alloy",
  "anyhow",
+ "hex",
  "serde",
  "serde_json",
  "thiserror 1.0.69",
