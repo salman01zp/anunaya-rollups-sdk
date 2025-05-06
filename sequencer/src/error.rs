@@ -1,12 +1,16 @@
 use alloy::primitives::SignatureError;
-use thiserror::Error;
-#[derive(Error, Debug)]
-pub enum RollupError {
-    SignatureError(#[from] SignatureError),
-}
 
-impl std::fmt::Display for RollupError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self)
-    }
+pub type Result<T> = std::result::Result<T, SequencerError>;
+
+#[derive(Debug, thiserror::Error)]
+pub enum SequencerError {
+    /// An Io error occurred.
+    #[error(transparent)]
+    Io(#[from] std::io::Error),
+    /// Generic error.
+    #[error("{}", _0)]
+    Generic(&'static str),
+    /// Transaction verification
+    #[error(transparent)]
+    SignatureError(#[from] SignatureError),
 }

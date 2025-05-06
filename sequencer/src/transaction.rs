@@ -1,4 +1,4 @@
-use crate::error::RollupError;
+use crate::error::SequencerError;
 use ::serde::{Deserialize, Serialize};
 use alloy::primitives::{Address, Signature, TxNonce as Nonce};
 
@@ -38,11 +38,11 @@ impl SignedTransaction {
         serde_json::from_slice(bytes).ok()
     }
 
-    pub fn recover(&self) -> Result<Address, RollupError> {
+    pub fn recover(&self) -> Result<Address, SequencerError> {
         let bytes = self.transaction.encode();
         self.signature
             .recover_address_from_msg(bytes)
-            .map_err(|e| RollupError::SignatureError(e))
+            .map_err(|e| SequencerError::SignatureError(e))
     }
 }
 
