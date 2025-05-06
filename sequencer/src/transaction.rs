@@ -1,7 +1,6 @@
-
-use::serde::{Serialize, Deserialize};
-use alloy::primitives::{Address, TxNonce as Nonce, Signature };
 use crate::error::RollupError;
+use ::serde::{Deserialize, Serialize};
+use alloy::primitives::{Address, Signature, TxNonce as Nonce};
 
 type Amount = u64;
 
@@ -11,7 +10,6 @@ pub struct Transaction {
     pub destination: Address,
     pub nonce: Nonce,
 }
-
 
 impl Transaction {
     fn encode(&self) -> Vec<u8> {
@@ -46,13 +44,12 @@ impl SignedTransaction {
             .recover_address_from_msg(bytes)
             .map_err(|e| RollupError::SignatureError(e))
     }
-
 }
 
 #[cfg(test)]
 mod tests {
     use crate::transaction::Transaction;
-    use alloy::signers::{local::PrivateKeySigner, Signer};
+    use alloy::signers::{Signer, local::PrivateKeySigner};
 
     use super::*;
     #[tokio::test]
@@ -68,7 +65,7 @@ mod tests {
         let signature = alice.sign_message(&transaction.encode()).await.unwrap();
         let signed_transaction = SignedTransaction {
             transaction,
-            signature
+            signature,
         };
 
         let recovered_address = signed_transaction
