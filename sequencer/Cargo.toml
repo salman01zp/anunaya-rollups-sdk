@@ -12,5 +12,6 @@ thiserror = { workspace = true }
 alloy = { workspace = true }
 tracing-subscriber = { workspace = true, features = ["parking_lot", "env-filter"]}
 tracing = { workspace = true }
+hex = { workspace = true }
 
 

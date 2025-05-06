@@ -12,7 +12,7 @@ pub struct Transaction {
 }
 
 impl Transaction {
-    fn encode(&self) -> Vec<u8> {
+    pub fn encode(&self) -> Vec<u8> {
         serde_json::to_string(&self)
             .expect("Serialization should not fail")
             .as_bytes()

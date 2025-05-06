@@ -1,8 +1,8 @@
 mod error;
-mod sequencer;
-mod transaction;
 mod logger;
+mod sequencer;
 mod store;
+mod transaction;
 
 use logger::setup_logger;
 
