@@ -2,6 +2,7 @@ mod error;
 mod sequencer;
 mod transaction;
 mod logger;
+mod store;
 
 use logger::setup_logger;
 
