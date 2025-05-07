@@ -1,4 +1,5 @@
 mod info;
+mod submit_transaction;
 
 use std::net::SocketAddr;
 use std::sync::Arc;
@@ -8,6 +9,7 @@ use crate::sequencer::SequencerContext;
 use axum::Router;
 use axum::routing::{get, post};
 use info::handle_sequencer_info;
+use submit_transaction::handle_submit_transaction;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
 
@@ -17,6 +19,7 @@ pub async fn build_api_services(ctx: SequencerContext) -> Result<()> {
 
     let api = Router::new()
         .route("/info", get(handle_sequencer_info))
+        .route("/submit_transaction", post(handle_submit_transaction))
         .layer(TraceLayer::new_for_http())
         .layer(CorsLayer::permissive());
 

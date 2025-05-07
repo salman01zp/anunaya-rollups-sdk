@@ -5,11 +5,11 @@ pub struct SequencerConfig;
 
 #[derive(Debug, Clone)]
 pub struct SequencerContext {
-    config: SequencerConfig,
-    store: TransactionStore,
+    pub config: SequencerConfig,
+    pub store: TransactionStore,
 }
 
-trait SequencerRpcMethods {
+pub trait SequencerRpcMethods {
     fn accept_tx(&self, tx: Vec<u8>) -> Result<()>;
     fn publish_batch(&self) -> Result<()>;
 }
