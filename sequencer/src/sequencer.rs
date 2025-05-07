@@ -1,7 +1,9 @@
 use crate::{error::Result, store::TransactionStore, transaction::SignedTransaction};
 
+#[derive(Debug, Clone, Default)]
 pub struct SequencerConfig;
 
+#[derive(Debug, Clone)]
 pub struct SequencerContext {
     config: SequencerConfig,
     store: TransactionStore,

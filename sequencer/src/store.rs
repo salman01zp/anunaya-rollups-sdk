@@ -4,6 +4,7 @@ use std::collections::VecDeque;
 use std::sync::Arc;
 use std::sync::Mutex;
 
+#[derive(Debug, Clone)]
 pub struct TransactionStore {
     mempool: Arc<Mutex<VecDeque<SignedTransaction>>>,
     mempool_max_txs_count: usize,
