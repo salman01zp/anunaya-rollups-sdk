@@ -1,2 +1,2 @@
-mod traits;
 mod block;
+mod traits;

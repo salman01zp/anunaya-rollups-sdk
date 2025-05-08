@@ -1,6 +1,6 @@
+use crate::traits::{BlockHeaderT, BlockT, HasherT, SignedTransactionT};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
-use crate::traits::{BlockHeaderT, BlockT, HasherT, SignedTransactionT};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BlockHeader<Number: Copy + Into<u64>, Hash: HasherT> {
