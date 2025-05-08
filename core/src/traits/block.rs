@@ -1,9 +1,14 @@
 #![allow(dead_code)]
+use super::*;
 use std::fmt::Debug;
 
-pub trait HasherT: Sync + Send {
-    type Output: AsRef<[u8]> + Send + Sync + Clone + Debug + Copy;
-    fn hash(s: &[u8]) -> Self::Output;
+pub trait BlockT: Clone + Send + Sync + Debug + 'static {
+    type Transaction: SignedTransactionT;
+    type BlockHeader: BlockHeaderT;
+
+    fn header(&self) -> &Self::BlockHeader;
+    fn transactions(&self) -> &[Self::Transaction];
+    fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self;
 }
 
 pub trait BlockHeaderT: Clone + Send + Sync + Debug + 'static {
@@ -33,15 +38,4 @@ pub trait BlockHeaderT: Clone + Send + Sync + Debug + 'static {
     fn hash(&self) -> Self::Hash {
         Self::Hashing::hash(self.encode())
     }
-}
-
-pub trait SignedTransactionT: Clone + Send + Sync + Debug + 'static {}
-
-pub trait BlockT: Clone + Send + Sync + Debug + 'static {
-    type Transaction: SignedTransactionT;
-    type BlockHeader: BlockHeaderT;
-
-    fn header(&self) -> &Self::BlockHeader;
-    fn transactions(&self) -> &[Self::Transaction];
-    fn new(header: Self::BlockHeader, transactions: Vec<Self::Transaction>) -> Self;
 }

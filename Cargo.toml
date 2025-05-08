@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = ["sequencer"]
+members = [ "core","sequencer"]
 
 [workspace.dependencies]
 alloy = { version = "0.15.8", features = ["full"] }
