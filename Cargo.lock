@@ -773,6 +773,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "anunaya-rollup-core"
+version = "0.1.0"
+dependencies = [
+ "alloy",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "anunaya-rollups-sdk"
 version = "0.1.0"
 
