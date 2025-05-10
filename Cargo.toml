@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [ "core","sequencer"]
+members = [ "core", "erasure-code","sequencer"]
 
 [workspace.dependencies]
 alloy = { version = "0.15.8", features = ["full"] }
@@ -18,6 +18,15 @@ tracing-subscriber = "0.3.19"
 hex = "0.4.3"
 axum = "0.8.4"
 tower-http = "0.6.2"
+
+
+ark-ff = "0.5.0"
+ark-serialize = "0.5.0"
+ark-std = {version = "0.5.0", default-features = false }
+derivative = { version = "2.2.0", features = ["use_core"]}
+ark-bls12-377 = "0.5.0"
+ark-bls12-381 = "0.5.0"
+ark-bn254 = "0.5.0"
 
 
 
