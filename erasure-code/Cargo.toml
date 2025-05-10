@@ -7,3 +7,11 @@ edition = "2024"
 serde = { workspace = true, features = ["derive"]}
 serde_json = { workspace = true }
 thiserror = { workspace = true }
+
+ark-ff = { workspace = true }
+ark-serialize = { workspace = true, features = [ "derive" ] }
+ark-std = { workspace = true }
+derivative = {workspace = true }
+ark-bls12-377 =  {workspace = true }
+ark-bls12-381 = {workspace = true }
+ark-bn254 =  { workspace = true }
