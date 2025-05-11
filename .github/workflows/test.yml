@@ -2,7 +2,8 @@ name: Test
 
 on:
   pull_request:
-    branches: [ main, master, develop ]
+    branches: [ '**' ]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           profile: minimal
           toolchain: stable
@@ -29,7 +30,7 @@ jobs:
           shared-key: "sdk-cache"
 
       - name: Run cargo test
-        uses: actions-rs/cargo@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           command: test
           args: --workspace
