@@ -1,0 +1,58 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [ '**' ]
+    types: [opened, synchronize, reopened, ready_for_review]
+    
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "sdk-cache"
+
+      - name: Run cargo clippy
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          command: clippy
+          args: --workspace
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: rustfmt
+
+      - name: Run cargo fmt
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          command: fmt
+          args: --all -- --check

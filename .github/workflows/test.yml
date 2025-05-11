@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [ '**' ]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "sdk-cache"
+
+      - name: Run cargo test
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          command: test
+          args: --workspace
