@@ -31,11 +31,11 @@ pub trait BlockHeaderT: Clone + Send + Sync + Debug + 'static {
     // Returns a reference to the parent hash.
     fn parent_hash(&self) -> &Self::Hash;
 
-    fn encode(&self) -> &[u8] {
-        todo!()
-    }
+    // Returns a vector of encoded values
+    fn encode(&self) -> Vec<u8>;
+
     // Returns the hash of the header.
     fn hash(&self) -> Self::Hash {
-        Self::Hashing::hash(self.encode())
+        Self::Hashing::hash(&self.encode())
     }
 }

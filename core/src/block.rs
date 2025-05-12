@@ -38,8 +38,15 @@ where
         &self.parent_hash
     }
 
-    fn encode(&self) -> &[u8] {
-        todo!()
+    fn encode(&self) -> Vec<u8> {
+        let mut encoded = Vec::with_capacity(68);
+        encoded.extend_from_slice(self.parent_hash.as_ref());
+        let number_le: u32 = self.number.into() as u32; 
+        encoded.extend_from_slice(&number_le.to_le_bytes());
+        encoded.extend_from_slice(self.state_root.as_ref());
+        encoded
+
+        
     }
 }
 
