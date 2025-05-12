@@ -1,0 +1,13 @@
+[package]
+name = "example-rollup"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anunaya-rollup-core = { workspace = true }
+serde = {workspace = true, features = ["derive"]}
+alloy = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+
+
