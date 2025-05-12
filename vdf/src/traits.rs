@@ -7,7 +7,6 @@ use ark_std::{
 
 use crate::errors::VDFError;
 
-
 /// A trait for VDF proof, evaluation and verification.
 pub trait VDF {
     /// Public parameters

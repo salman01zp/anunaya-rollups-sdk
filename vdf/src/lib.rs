@@ -1,15 +1,13 @@
-
 mod errors;
 mod traits;
 
-
+use crate::errors::VDFError;
+use crate::traits::VDF;
 use ark_ec::AffineRepr;
 use ark_ff::PrimeField;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{format, vec::Vec};
 use core::marker::PhantomData;
-use crate::errors::VDFError;
-use crate::traits::VDF;
 
 /// MinRoot compatible field
 pub trait MinRootField: PrimeField {
@@ -58,7 +56,6 @@ where
         MinRootElement(x, y)
     }
 }
-
 
 pub struct MinRoot<F: MinRootField> {
     _phantom: PhantomData<F>,
