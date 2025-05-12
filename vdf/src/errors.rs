@@ -6,5 +6,4 @@ pub enum VDFError {
     // VerificationError
     #[error("{}", _0)]
     VerificationError(String),
-
 }

@@ -1780,6 +1780,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-rollup"
+version = "0.1.0"
+dependencies = [
+ "alloy",
+ "anunaya-rollup-core",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+]
+
+[[package]]
 name = "fastrand"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

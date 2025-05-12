@@ -7,3 +7,4 @@ mod state_machine;
 pub use block::*;
 pub use hasher::*;
 pub use signed_tx::*;
+pub use state_machine::*;
