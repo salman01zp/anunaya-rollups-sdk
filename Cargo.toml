@@ -4,7 +4,14 @@ version = "0.1.0"
 edition = "2024"
 
 [workspace]
-members = [ "core", "example-rollup","sequencer"]
+members = [ 
+    "core",
+    "core/vdf",
+    "core/erasure-code",
+    "core/vid",
+    "example-rollup",
+    "sequencer"
+    ]
 
 [workspace.dependencies]
 anunaya-rollup-core = { path = "core"}
