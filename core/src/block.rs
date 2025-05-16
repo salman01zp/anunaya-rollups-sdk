@@ -1,6 +1,7 @@
 use crate::traits::{BlockHeaderT, BlockT, HasherT, SignedTransactionT};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
+use hex::decode;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BlockHeader<Number: Copy + Into<u64>, Hash: HasherT> {
@@ -38,8 +39,13 @@ where
         &self.parent_hash
     }
 
-    fn encode(&self) -> &[u8] {
-        todo!()
+    fn encode(&self) -> Vec<u8> {
+        let mut encoded = Vec::with_capacity(68);
+        encoded.extend_from_slice(self.parent_hash.as_ref());
+        let number_le: u32 = self.number.into() as u32;
+        encoded.extend_from_slice(&number_le.to_le_bytes());
+        encoded.extend_from_slice(self.state_root.as_ref());
+        encoded
     }
 }
 
@@ -79,6 +85,7 @@ where
 mod tests {
     use super::*;
     use alloy::primitives::B256;
+    use anyhow::Ok;
 
     // Test implementation of SignedTransactionT
     #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -148,5 +155,21 @@ mod tests {
         {
             assert_eq!(original.data, deserialized.data);
         }
+    }
+    #[test]
+    fn test_header_encoding() -> Result<(), anyhow::Error> {
+        let parent_hash = KeccakHasher::hash(b"parent");
+        let state_root = KeccakHasher::hash(b"state");
+        let number = 1u64;
+        let header = BlockHeader::<u64, KeccakHasher>::new(number, state_root, parent_hash);
+
+
+        let encoded = header.encode();
+        assert_eq!(encoded.len(), 68);
+
+        // Check parent_hash (first 32 bytes)
+        let expected = hex::decode("ff483e972a04a9a62bb4b7d04ae403c615604e4090521ecc5bb7af67f71be09c")?;
+        assert_eq!(&encoded[..32], expected.as_slice());
+        Ok(())
     }
 }
