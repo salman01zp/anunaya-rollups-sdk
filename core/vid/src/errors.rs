@@ -13,3 +13,13 @@
 
 // You should have received a copy of the GNU General Public License
 // along with Anunaya Systems. If not, see <http://www.gnu.org/licenses/>.
+
+#[derive(thiserror::Error, Debug)]
+pub enum VidError {
+    /// Caller provided an invalid argument
+    #[error("invalid arguments: {0}")]
+    Argument(String),
+
+}
+
+pub type VidResult<T> = Result<T, VidError>;
